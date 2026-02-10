@@ -3,7 +3,6 @@ import session from "express-session";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { initBot } from "./bot.js";
-import { initGPIO } from "./controller.js";
 import { initDatabase } from "./database.js";
 import adminRouter from "./routes/admin.js";
 import authRouter from "./routes/auth.js";
@@ -31,7 +30,6 @@ app.use(
 
 await initDatabase();
 await initBot();
-initGPIO();
 
 app.use("/api/auth", authRouter);
 app.use("/api/door", doorRouter);
