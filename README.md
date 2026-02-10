@@ -91,9 +91,14 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed Raspberry Pi deployment instru
 ### Quick Production Start / 快速生產環境啟動
 
 ```bash
+# Build frontend
 pnpm build
-pnpm start
+
+# Start server (serves both API and static files)
+NODE_ENV=production pnpm start
 ```
+
+The server will serve the frontend at http://localhost:3000 in production mode.
 
 ## Project Structure / 專案結構
 
@@ -142,6 +147,19 @@ pnpm build
 This project is licensed under the [WTFPL License](./LICENSE).
 
 ![](https://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-1.png)
+
+## Optional Reverse Proxy
+
+The app serves static files directly, but you can use Caddy for automatic HTTPS:
+
+```bash
+# Install Caddy and use included Caddyfile
+sudo apt install caddy
+sudo cp Caddyfile /etc/caddy/Caddyfile
+sudo systemctl restart caddy
+```
+
+Caddy automatically handles SSL certificates with Let's Encrypt!
 
 ## Credits
 

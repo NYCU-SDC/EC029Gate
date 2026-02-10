@@ -28,7 +28,8 @@ fi
 # Check if pnpm is installed
 if ! command -v pnpm &> /dev/null; then
   echo "⚠️  pnpm not found. Installing..."
-  npm install -g pnpm
+  npm install --global corepack@latest
+  corepack enable pnpm
   echo "✅ pnpm installed"
 fi
 

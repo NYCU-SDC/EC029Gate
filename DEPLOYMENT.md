@@ -74,54 +74,7 @@ sudo systemctl start door-manager
 sudo systemctl status door-manager
 ```
 
-### 5. Setup Nginx (Optional)
-
-```bash
-sudo apt install -y nginx
-
-# Create config
-sudo nano /etc/nginx/sites-available/door-manager
-```
-
-Add content:
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    # Frontend
-    location / {
-        root /home/pi/door-manager/client/dist;
-        try_files $uri $uri/ /index.html;
-    }
-
-    # API
-    location /api {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-Enable site:
-```bash
-sudo ln -s /etc/nginx/sites-available/door-manager /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-```
-
-### 6. Setup HTTPS with Let's Encrypt
-
-```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d your-domain.com
-```
-
-### 7. GPIO Permissions
+### 5. GPIO Permissions
 
 Add user to gpio group:
 ```bash
@@ -192,6 +145,46 @@ Generate OAuth2 URL:
 3. Bot Permissions: `Send Messages`, `Use Slash Commands`
 4. Open generated URL in browser
 5. Select server and authorize
+
+## Optional: Setup Caddy Reverse Proxy
+
+If you want to use Caddy as a reverse proxy (for automatic HTTPS or multiple services):
+
+### Install Caddy
+
+```bash
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+```
+
+### Configure Caddy
+
+```bash
+# Edit domain in Caddyfile
+nano Caddyfile
+
+# Copy to Caddy config directory
+sudo cp Caddyfile /etc/caddy/Caddyfile
+
+# Test configuration
+sudo caddy validate --config /etc/caddy/Caddyfile
+
+# Restart Caddy
+sudo systemctl restart caddy
+sudo systemctl enable caddy
+```
+
+**Features:**
+- ✨ Automatic HTTPS with Let's Encrypt (no manual cert setup!)
+- 🔄 Auto-renewal of certificates
+- 🗜️ Built-in compression
+- 🛡️ Security headers
+- 📝 Easy configuration
+
+**Note:** The application serves the frontend directly in production mode, so Caddy is optional.
 
 ## Monitoring
 

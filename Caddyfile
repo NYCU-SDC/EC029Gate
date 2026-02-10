@@ -1,0 +1,3 @@
+ec029.bamfoobox.org {
+    reverse_proxy localhost:3000
+}
