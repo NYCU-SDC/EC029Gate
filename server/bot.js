@@ -48,8 +48,7 @@ async function registerCommands() {
   const commands = [
     {
       name: 'setup-door',
-      description: 'Create a door unlock button in this channel',
-      default_member_permissions: PermissionFlagsBits.Administrator.toString()
+      description: 'Create a door unlock button in this channel'
     }
   ];
 
@@ -83,7 +82,7 @@ async function handleCommand(interaction) {
     }
 
     await interaction.reply({
-      content: '🔐 **EC029 Door Access**\n\nClick the button below to unlock the door. You need appropriate permissions to use this.',
+      content: '🔐 **EC029 Door Access**\nClick the button below to unlock the door. You need appropriate permissions to use this.\n',
       components: [row]
     });
   }
