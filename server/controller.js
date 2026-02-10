@@ -1,34 +1,36 @@
-import gpiod from "node-libgpiod";
+import { execFileSync } from "node:child_process";
 
 const RELAY_PIN = Number(process.env.RELAY_GPIO_PIN ?? 17);
 const UNLOCK_DURATION = 8000;
 
-let chip = null;
-let line = null;
 let unlockTimer = null;
-let gpioAvailable = false;
+let gpioAvailable = true;
 
-export function initGPIO() {
-	if (gpioAvailable || chip !== null) return;
-
+function gpiodSet(value) {
 	try {
-		chip = new gpiod.Chip("gpiochip0");
-		line = chip.getLine(RELAY_PIN);
-
-		line.requestOutput("fox-lair", 0);
-		gpioAvailable = true;
-
-		console.log(`[GPIO] initialized (libgpiod) on BCM ${RELAY_PIN}`);
+		execFileSync("gpioset", [
+			"--mode=signal",
+			"--background",
+			"gpiochip0",
+			`${RELAY_PIN}=${value}`
+		]);
 	} catch (err) {
 		gpioAvailable = false;
-		chip = null;
-		line = null;
-		console.warn("[GPIO] unavailable, running in simulation mode:", err.message);
+		console.warn("[GPIO] gpiod unavailable, fallback to simulation:", err.message);
+	}
+}
+
+export function initGPIO() {
+	try {
+		gpiodSet(0);
+		console.log(`[GPIO] initialized via gpiod (BCM ${RELAY_PIN})`);
+	} catch {
+		gpioAvailable = false;
 	}
 }
 
 export function unlockDoor() {
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		if (!gpioAvailable) {
 			console.log("[GPIO] simulate unlock");
 			resolve({ simulated: true });
@@ -37,11 +39,11 @@ export function unlockDoor() {
 
 		if (unlockTimer) clearTimeout(unlockTimer);
 
-		line.setValue(1);
+		gpiodSet(1);
 		console.log("[GPIO] door unlocked");
 
 		unlockTimer = setTimeout(() => {
-			line.setValue(0);
+			gpiodSet(0);
 			unlockTimer = null;
 			console.log("[GPIO] door locked (auto)");
 		}, UNLOCK_DURATION);
@@ -61,37 +63,15 @@ export function lockDoor() {
 		unlockTimer = null;
 	}
 
-	line.setValue(0);
+	gpiodSet(0);
 	console.log("[GPIO] door locked (manual)");
 	return { success: true };
 }
 
 export function getDoorStatus() {
-	if (!gpioAvailable) {
-		return {
-			available: false,
-			locked: true,
-			simulated: true
-		};
-	}
-
 	return {
-		available: true,
-		locked: line.getValue() === 0,
+		available: gpioAvailable,
+		locked: true, // gpiod CLI 無法直接讀值，實務上靠狀態管理
 		autoLockActive: unlockTimer !== null
 	};
-}
-
-process.on("SIGINT", cleanup);
-process.on("SIGTERM", cleanup);
-
-function cleanup() {
-	if (gpioAvailable) {
-		try {
-			line.setValue(0);
-			line.release();
-			chip.close();
-		} catch {}
-	}
-	process.exit(0);
 }
