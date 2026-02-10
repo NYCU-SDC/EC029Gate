@@ -1,71 +1,71 @@
 .login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, var(--base) 0%, var(--mantle) 100%);
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+	background: linear-gradient(135deg, var(--base) 0%, var(--mantle) 100%);
 }
 
 .login-card {
-  background-color: var(--mantle);
-  border: 1px solid var(--surface0);
-  border-radius: 16px;
-  padding: 3rem;
-  max-width: 450px;
-  width: 100%;
+	background-color: var(--mantle);
+	border: 1px solid var(--surface0);
+	border-radius: 16px;
+	padding: 3rem;
+	max-width: 450px;
+	width: 100%;
 }
 
 .login-header {
-  text-align: center;
-  margin-bottom: 2rem;
+	text-align: center;
+	margin-bottom: 2rem;
 }
 
 .login-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--blue);
+	font-size: 2.5rem;
+	margin-bottom: 0.5rem;
+	color: var(--blue);
 }
 
 .login-header p {
-  color: var(--subtext0);
-  font-size: 1rem;
+	color: var(--subtext0);
+	font-size: 1rem;
 }
 
 .login-methods {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
 }
 
 .password-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: var(--overlay0);
-  font-size: 0.875rem;
-  font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	color: var(--overlay0);
+	font-size: 0.875rem;
+	font-weight: 600;
 }
 
 .divider::before,
 .divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background-color: var(--surface0);
+	content: "";
+	flex: 1;
+	height: 1px;
+	background-color: var(--surface0);
 }
 
 .error-message {
-  padding: 0.75rem;
-  background-color: rgba(243, 139, 168, 0.1);
-  border: 1px solid var(--red);
-  border-radius: 8px;
-  color: var(--red);
-  text-align: center;
+	padding: 0.75rem;
+	background-color: rgba(243, 139, 168, 0.1);
+	border: 1px solid var(--red);
+	border-radius: 8px;
+	color: var(--red);
+	text-align: center;
 }

@@ -44,11 +44,13 @@ pnpm build
 ### 4. Setup as System Service
 
 Create service file:
+
 ```bash
 sudo nano /etc/systemd/system/door-manager.service
 ```
 
 Add content:
+
 ```ini
 [Unit]
 Description=Fox Lair Control System
@@ -68,6 +70,7 @@ WantedBy=multi-user.target
 ```
 
 Enable and start:
+
 ```bash
 sudo systemctl enable door-manager
 sudo systemctl start door-manager
@@ -77,11 +80,13 @@ sudo systemctl status door-manager
 ### 5. GPIO Permissions
 
 Add user to gpio group:
+
 ```bash
 sudo usermod -a -G gpio pi
 ```
 
 Or use sudo (less secure):
+
 ```bash
 # Edit service file to run as root (not recommended)
 sudo nano /etc/systemd/system/door-manager.service
@@ -140,6 +145,7 @@ gpioset gpiochip0 17=0  # Turn off
 ### 4. Invite Bot to Server
 
 Generate OAuth2 URL:
+
 1. Go to OAuth2 → URL Generator
 2. Scopes: `bot`, `applications.commands`
 3. Bot Permissions: `Send Messages`, `Use Slash Commands`
@@ -178,6 +184,7 @@ sudo systemctl enable caddy
 ```
 
 **Features:**
+
 - ✨ Automatic HTTPS with Let's Encrypt (no manual cert setup!)
 - 🔄 Auto-renewal of certificates
 - 🗜️ Built-in compression

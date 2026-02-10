@@ -19,12 +19,14 @@ EC029 IoT Control System
 ## Architecture / 架構
 
 ### Hardware / 硬體
+
 - Raspberry Pi 5
 - Door Lock (power-controlled) / 電控門鎖
 - Relay Module / 繼電器模組
 - Power Supply / 電源供應器
 
 ### Software Stack / 軟體架構
+
 - **Backend**: Node.js, Express, Discord.js
 - **Frontend**: React, Vite
 - **Database**: SQLite
@@ -33,6 +35,7 @@ EC029 IoT Control System
 ## Quick Start / 快速開始
 
 ### Prerequisites / 前置需求
+
 - Node.js 18+ and pnpm
 - Discord Bot Token and OAuth credentials
 - Raspberry Pi 5 (for GPIO control)
@@ -40,11 +43,13 @@ EC029 IoT Control System
 ### Installation / 安裝
 
 1. **Install dependencies / 安裝相依套件**
+
    ```bash
    pnpm install
    ```
 
 2. **Configure environment / 設定環境變數**
+
    ```bash
    cp .env.example .env
    # Edit .env with your credentials
@@ -62,6 +67,7 @@ Visit / 訪問: http://localhost:5173
 See [.env.example](./.env.example) for all configuration options.
 
 Key variables / 主要變數:
+
 - `DISCORD_CLIENT_ID` - Discord OAuth Client ID
 - `DISCORD_CLIENT_SECRET` - Discord OAuth Secret
 - `DISCORD_BOT_TOKEN` - Discord Bot Token

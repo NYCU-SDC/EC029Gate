@@ -1,124 +1,124 @@
 .admin-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--base);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--base);
 }
 
 .admin-header {
-  background-color: var(--mantle);
-  border-bottom: 1px solid var(--surface0);
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	background-color: var(--mantle);
+	border-bottom: 1px solid var(--surface0);
+	padding: 1.5rem 2rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	max-width: 1400px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .admin-header h1 {
-  font-size: 1.75rem;
-  color: var(--blue);
-  margin: 0;
+	font-size: 1.75rem;
+	color: var(--blue);
+	margin: 0;
 }
 
 .header-user {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
 }
 
 .user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
 
 .user-name {
-  font-weight: 600;
-  color: var(--text);
+	font-weight: 600;
+	color: var(--text);
 }
 
 .admin-badge {
-  background-color: var(--mauve);
-  color: var(--crust);
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+	background-color: var(--mauve);
+	color: var(--crust);
+	padding: 0.25rem 0.75rem;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
 }
 
 .admin-content {
-  flex: 1;
-  display: flex;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 2rem;
-  gap: 2rem;
+	flex: 1;
+	display: flex;
+	max-width: 1400px;
+	margin: 0 auto;
+	width: 100%;
+	padding: 2rem;
+	gap: 2rem;
 }
 
 .admin-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-width: 220px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-width: 220px;
 }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background-color: var(--mantle);
-  border: 1px solid var(--surface0);
-  border-radius: 10px;
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem 1.25rem;
+	background-color: var(--mantle);
+	border: 1px solid var(--surface0);
+	border-radius: 10px;
+	color: var(--text);
+	font-size: 1rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-align: left;
 }
 
 .nav-item:hover {
-  background-color: var(--surface0);
-  border-color: var(--surface1);
+	background-color: var(--surface0);
+	border-color: var(--surface1);
 }
 
 .nav-item.active {
-  background-color: var(--blue);
-  color: var(--crust);
-  border-color: var(--blue);
-  font-weight: 600;
+	background-color: var(--blue);
+	color: var(--crust);
+	border-color: var(--blue);
+	font-weight: 600;
 }
 
 .nav-icon {
-  font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 
 .admin-main {
-  flex: 1;
+	flex: 1;
 }
 
 @media (max-width: 768px) {
-  .admin-content {
-    flex-direction: column;
-  }
+	.admin-content {
+		flex-direction: column;
+	}
 
-  .admin-nav {
-    flex-direction: row;
-    min-width: unset;
-    overflow-x: auto;
-  }
+	.admin-nav {
+		flex-direction: row;
+		min-width: unset;
+		overflow-x: auto;
+	}
 
-  .nav-item {
-    white-space: nowrap;
-  }
+	.nav-item {
+		white-space: nowrap;
+	}
 }
