@@ -1,0 +1,114 @@
+.unlock-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.unlock-card {
+  text-align: center;
+}
+
+.unlock-card h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.unlock-description {
+  color: var(--subtext0);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.unlock-button {
+  font-size: 1.25rem;
+  padding: 1.25rem 3rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.countdown-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--surface0);
+  border-radius: 12px;
+}
+
+.countdown-bar {
+  width: 100%;
+  height: 24px;
+  background-color: var(--surface1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.countdown-progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--teal));
+  border-radius: 12px;
+  transition: width 1s linear;
+}
+
+.countdown-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.info-card {
+  background-color: var(--mantle);
+}
+
+.info-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  padding: 0.75rem 0;
+  color: var(--subtext0);
+  border-bottom: 1px solid var(--surface0);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.info-list li:last-child {
+  border-bottom: none;
+}
+
+.info-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.success-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(166, 227, 161, 0.1);
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.error-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(243, 139, 168, 0.1);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  color: var(--red);
+  font-weight: 600;
+}
