@@ -5,15 +5,16 @@ const UNLOCK_DURATION = 8000;
 
 let unlockTimer = null;
 let gpioAvailable = true;
+let currentValue = 0;
 
 function gpiodSet(value) {
 	try {
+		// 不要 daemonize，讓 Node process 持有 GPIO
 		execFileSync("gpioset", [
-			"--mode=signal",
-			"--background",
 			"gpiochip0",
 			`${RELAY_PIN}=${value}`
 		]);
+		currentValue = value;
 	} catch (err) {
 		gpioAvailable = false;
 		console.warn("[GPIO] gpiod unavailable, fallback to simulation:", err.message);
@@ -71,7 +72,7 @@ export function lockDoor() {
 export function getDoorStatus() {
 	return {
 		available: gpioAvailable,
-		locked: true, // gpiod CLI 無法直接讀值，實務上靠狀態管理
+		locked: currentValue === 0,
 		autoLockActive: unlockTimer !== null
 	};
 }
