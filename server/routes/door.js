@@ -15,7 +15,7 @@ const RATE_LIMIT_MS = 0; // 30 seconds between unlocks per user
 function checkRateLimit(userId) {
 	const lastUnlock = userLastUnlock.get(userId);
 	if (!lastUnlock) return { allowed: true };
-	
+
 	const timeSince = Date.now() - lastUnlock;
 	if (timeSince < RATE_LIMIT_MS) {
 		const waitTime = Math.ceil((RATE_LIMIT_MS - timeSince) / 1000);
@@ -25,7 +25,7 @@ function checkRateLimit(userId) {
 			message: `Please wait ${waitTime} seconds before unlocking again`
 		};
 	}
-	
+
 	return { allowed: true };
 }
 
@@ -69,7 +69,7 @@ router.post("/unlock", requireAuth, requireAccess, async (req, res) => {
 	const userId = req.session.user.id;
 	const username = req.session.user.username;
 	const ipAddress = req.ip || req.connection.remoteAddress;
-	
+
 	try {
 		// Check rate limit
 		const rateLimit = checkRateLimit(userId);
@@ -84,7 +84,7 @@ router.post("/unlock", requireAuth, requireAccess, async (req, res) => {
 
 		// Attempt to unlock
 		const result = await unlockDoor({ userId, source: "web" });
-		
+
 		if (!result.success) {
 			console.log(`[WEB] unlock rejected for user ${username}: ${result.message}`);
 			return res.status(409).json({
@@ -98,7 +98,7 @@ router.post("/unlock", requireAuth, requireAccess, async (req, res) => {
 
 		// Log the access with IP
 		logAccess(userId, username, "web", ipAddress);
-		
+
 		console.log(`[WEB] door unlocked by ${username} (${userId}) from ${ipAddress}`);
 
 		res.json({

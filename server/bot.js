@@ -14,7 +14,7 @@ const RATE_LIMIT_MS = 30000; // 30 seconds between unlocks per user
 function checkRateLimit(userId) {
 	const lastUnlock = userLastUnlock.get(userId);
 	if (!lastUnlock) return { allowed: true };
-	
+
 	const timeSince = Date.now() - lastUnlock;
 	if (timeSince < RATE_LIMIT_MS) {
 		const waitTime = Math.ceil((RATE_LIMIT_MS - timeSince) / 1000);
@@ -24,7 +24,7 @@ function checkRateLimit(userId) {
 			message: `Please wait ${waitTime} seconds before unlocking again`
 		};
 	}
-	
+
 	return { allowed: true };
 }
 
@@ -232,10 +232,7 @@ async function handleButton(interaction) {
 				.setColor("#57F287")
 				.setTitle("✅ Door Unlocked")
 				.setDescription("The door has been successfully unlocked!")
-				.addFields(
-					{ name: "⏱️ Auto-lock", value: `${result.duration / 1000} seconds`, inline: true },
-					{ name: "👤 Unlocked by", value: interaction.user.username, inline: true }
-				);
+				.addFields({ name: "⏱️ Auto-lock", value: `${result.duration / 1000} seconds`, inline: true }, { name: "👤 Unlocked by", value: interaction.user.username, inline: true });
 
 			if (result.simulated) {
 				successEmbed.addFields({ name: "⚠️ Mode", value: "Simulation", inline: true });
