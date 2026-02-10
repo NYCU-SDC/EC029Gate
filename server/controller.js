@@ -1,57 +1,58 @@
-import { Gpio } from "onoff";
+import gpiod from "node-libgpiod";
 
-const RELAY_PIN = parseInt(process.env.RELAY_GPIO_PIN || "17");
+const RELAY_PIN = Number(process.env.RELAY_GPIO_PIN ?? 17);
 const UNLOCK_DURATION = 8000;
 
-let relay;
+let chip = null;
+let line = null;
 let unlockTimer = null;
+let gpioAvailable = false;
 
 export function initGPIO() {
+	if (gpioAvailable || chip !== null) return;
+
 	try {
-		relay = new Gpio(RELAY_PIN, "out");
-		relay.writeSync(0);
-		console.log(`GPIO initialized on pin ${RELAY_PIN}`);
-	} catch (error) {
-		console.warn("GPIO not available (probably not running on Raspberry Pi):", error.message);
-		relay = null;
+		chip = new gpiod.Chip("gpiochip0");
+		line = chip.getLine(RELAY_PIN);
+
+		line.requestOutput("fox-lair", 0);
+		gpioAvailable = true;
+
+		console.log(`[GPIO] initialized (libgpiod) on BCM ${RELAY_PIN}`);
+	} catch (err) {
+		gpioAvailable = false;
+		chip = null;
+		line = null;
+		console.warn("[GPIO] unavailable, running in simulation mode:", err.message);
 	}
 }
 
 export function unlockDoor() {
-	return new Promise((resolve, reject) => {
-		if (!relay) {
-			console.log("GPIO not available, simulating door unlock");
+	return new Promise(resolve => {
+		if (!gpioAvailable) {
+			console.log("[GPIO] simulate unlock");
 			resolve({ simulated: true });
 			return;
 		}
 
-		try {
-			// Clear any existing timer
-			if (unlockTimer) {
-				clearTimeout(unlockTimer);
-			}
+		if (unlockTimer) clearTimeout(unlockTimer);
 
-			// Unlock the door (activate relay)
-			relay.writeSync(1);
-			console.log("Door unlocked");
+		line.setValue(1);
+		console.log("[GPIO] door unlocked");
 
-			// Set timer to lock again
-			unlockTimer = setTimeout(() => {
-				relay.writeSync(0);
-				console.log("Door locked");
-				unlockTimer = null;
-			}, UNLOCK_DURATION);
+		unlockTimer = setTimeout(() => {
+			line.setValue(0);
+			unlockTimer = null;
+			console.log("[GPIO] door locked (auto)");
+		}, UNLOCK_DURATION);
 
-			resolve({ success: true, duration: UNLOCK_DURATION });
-		} catch (error) {
-			reject(error);
-		}
+		resolve({ success: true, duration: UNLOCK_DURATION });
 	});
 }
 
 export function lockDoor() {
-	if (!relay) {
-		console.log("GPIO not available, simulating door lock");
+	if (!gpioAvailable) {
+		console.log("[GPIO] simulate lock");
 		return { simulated: true };
 	}
 
@@ -60,28 +61,37 @@ export function lockDoor() {
 		unlockTimer = null;
 	}
 
-	relay.writeSync(0);
-	console.log("Door locked manually");
+	line.setValue(0);
+	console.log("[GPIO] door locked (manual)");
 	return { success: true };
 }
 
 export function getDoorStatus() {
-	if (!relay) {
-		return { available: false, locked: true };
+	if (!gpioAvailable) {
+		return {
+			available: false,
+			locked: true,
+			simulated: true
+		};
 	}
 
 	return {
 		available: true,
-		locked: relay.readSync() === 0,
+		locked: line.getValue() === 0,
 		autoLockActive: unlockTimer !== null
 	};
 }
 
-// Cleanup on exit
-process.on("SIGINT", () => {
-	if (relay) {
-		relay.writeSync(0);
-		relay.unexport();
+process.on("SIGINT", cleanup);
+process.on("SIGTERM", cleanup);
+
+function cleanup() {
+	if (gpioAvailable) {
+		try {
+			line.setValue(0);
+			line.release();
+			chip.close();
+		} catch {}
 	}
-	process.exit();
-});
+	process.exit(0);
+}
