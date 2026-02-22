@@ -1,11 +1,12 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, EmbedBuilder, GatewayIntentBits, PermissionFlagsBits } from "discord.js";
-import { unlockDoor } from "./controller.js";
+import { DOOR_UNLOCK_DURATION_MS, unlockDoor } from "./controller.js";
 import { getAllowedRoles, logAccess } from "./database.js";
 
 let bot;
 
 const userLastUnlock = new Map();
 const RATE_LIMIT_MS = 10000;
+const UNLOCK_DURATION_SECONDS = DOOR_UNLOCK_DURATION_MS / 1000;
 
 const checkRateLimit = userId => {
 	const lastUnlock = userLastUnlock.get(userId);
@@ -83,7 +84,7 @@ const updateOldDoorMessages = async () => {
 							.setColor("#5865F2")
 							.setTitle("🔐 EC029 Door Access")
 							.setDescription("Click the button below to unlock the door.")
-							.addFields({ name: "⏱️ Duration", value: "8 seconds", inline: true }, { name: "🔒 Security", value: "Role-based access", inline: true })
+							.addFields({ name: "⏱️ Duration", value: `${UNLOCK_DURATION_SECONDS} seconds`, inline: true }, { name: "🔒 Security", value: "Role-based access", inline: true })
 							.setFooter({ text: "Requires appropriate permissions" })
 							.setTimestamp();
 
@@ -151,7 +152,7 @@ const handleCommand = async interaction => {
 			.setColor("#5865F2")
 			.setTitle("🔐 EC029 Door Access")
 			.setDescription("Click the button below to unlock the door.")
-			.addFields({ name: "⏱️ Duration", value: "8 seconds", inline: true }, { name: "🔒 Security", value: "Role-based access", inline: true })
+			.addFields({ name: "⏱️ Duration", value: `${UNLOCK_DURATION_SECONDS} seconds`, inline: true }, { name: "🔒 Security", value: "Role-based access", inline: true })
 			.setFooter({ text: "Requires appropriate permissions" })
 			.setTimestamp();
 
@@ -226,9 +227,9 @@ const handleButton = async interaction => {
 			// 開門時立即回應
 			const openedEmbed = new EmbedBuilder()
 				.setColor("#57F287")
-				.setTitle("🔓 門已開啟")
-				.setDescription("門已成功開啟！")
-				.addFields({ name: "👤 開門者", value: interaction.user.username, inline: true })
+				.setTitle("🔓 Door Unlocked")
+				.setDescription("The door has been successfully unlocked.")
+				.addFields({ name: "🦊 Unlocked By", value: interaction.user.username, inline: true })
 				.setTimestamp();
 
 			await interaction.editReply({ embeds: [openedEmbed] });
@@ -238,9 +239,9 @@ const handleButton = async interaction => {
 				.then(async () => {
 					const closedEmbed = new EmbedBuilder()
 						.setColor("#5865F2")
-						.setTitle("🔒 門已關閉")
-						.setDescription("門剛才有開過，現在已關閉。")
-						.addFields({ name: "👤 開門者", value: interaction.user.username, inline: true })
+						.setTitle("🔒 Door Locked")
+						.setDescription("The door was unlocked and is now locked again.")
+						.addFields({ name: "🦊 Unlocked By", value: interaction.user.username, inline: true })
 						.setTimestamp();
 
 					await interaction.editReply({ embeds: [closedEmbed] });

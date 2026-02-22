@@ -5,6 +5,9 @@ let doorState = "closed"; // "closed" | "open"
 let lastUnlockTime = 0;
 
 const COOLDOWN_MS = 0; // 如果你想要全域冷卻時間
+export const DOOR_UNLOCK_DURATION_MS = 8000;
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const spawnGpio = args => {
 	return new Promise((resolve, reject) => {
@@ -59,8 +62,9 @@ export const unlockDoor = ({ userId, source }) => {
 				doorState = "open";
 				console.log("[GPIO] Door opened");
 
-				// 立刻送出關門訊號，但非同步讓呼叫者可以在開門時先回應
-				const whenClosed = spawnGpio(["-c", "gpiochip0", "-t0", "17=0"])
+				// 延遲一段時間後再送出關門訊號，讓 Discord/Web 行為一致
+				const whenClosed = sleep(DOOR_UNLOCK_DURATION_MS)
+					.then(() => spawnGpio(["-c", "gpiochip0", "-t0", "17=0"]))
 					.then(() => {
 						doorState = "closed";
 						isUnlocking = false;
@@ -73,7 +77,7 @@ export const unlockDoor = ({ userId, source }) => {
 						throw err;
 					});
 
-				resolve({ success: true, whenClosed });
+				resolve({ success: true, duration: DOOR_UNLOCK_DURATION_MS, whenClosed });
 			})
 			.catch(err => {
 				doorState = "closed";
