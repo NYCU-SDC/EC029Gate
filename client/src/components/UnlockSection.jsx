@@ -141,15 +141,9 @@ function UnlockSection() {
 
 			<div className="api-token-card card">
 				<h3>📱 API Token</h3>
-				<p className="api-token-description">
-					用 API token 搭配 iOS 捷徑來開門。Token 以雜湊儲存，只有產生當下會顯示一次。
-				</p>
+				<p className="api-token-description">用 API token 搭配 iOS 捷徑來開門。Token 以雜湊儲存，只有產生當下會顯示一次。</p>
 
-				{tokenMeta?.hasToken && (
-					<p className="token-meta">
-						目前有效 token，建立於 {new Date(tokenMeta.createdAt + "Z").toLocaleString()}
-					</p>
-				)}
+				{tokenMeta?.hasToken && <p className="token-meta">目前有效 token，建立於 {new Date(tokenMeta.createdAt + "Z").toLocaleString()}</p>}
 
 				{newToken && (
 					<div className="token-reveal">
@@ -161,8 +155,10 @@ function UnlockSection() {
 							</button>
 						</div>
 						<p className="token-usage">
-							iOS 捷徑設定：<br />
-							POST <code>{window.location.origin}/api/door/unlock</code><br />
+							iOS 捷徑設定：
+							<br />
+							POST <code>{window.location.origin}/api/door/unlock</code>
+							<br />
 							Header: <code>Authorization: Bearer &lt;token&gt;</code>
 						</p>
 					</div>

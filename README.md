@@ -90,6 +90,12 @@ Key variables / 主要變數:
 2. Use `/setup-door` command to create unlock button
 3. Click button to unlock door (role check required)
 
+### iOS Shortcut / iOS 捷徑
+
+記得設定 API Key，以及需要的話調整 API URL。
+
+https://www.icloud.com/shortcuts/c5ebaa9fb18743599e743dd4cc0fb577
+
 ## Deployment / 部署
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed Raspberry Pi deployment instructions.

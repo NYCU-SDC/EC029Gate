@@ -1,5 +1,5 @@
-import express from "express";
 import { createHash } from "crypto";
+import express from "express";
 import { checkUserAccess } from "../bot.js";
 import { getDoorStatus, unlockDoor } from "../controller.js";
 import { getUserByTokenHash, isUserAllowed, logAccess } from "../database.js";

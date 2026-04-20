@@ -17,6 +17,8 @@
 		"dev:client": "cd client && vite",
 		"dev:server": "node --env-file=.env --watch server/index.js",
 		"format": "prettier --write .",
+		"preinstall": "npx only-allow pnpm",
+		"prepare": "sh -c 'command -v git >/dev/null 2>&1 && [ -d .git ] && git config core.hooksPath .githooks || true'",
 		"start": "node --env-file=.env server/index.js"
 	},
 	"dependencies": {
